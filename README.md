@@ -42,6 +42,7 @@ There will be a few models downloaded as well, including:
 
 Raunak's RANNET has already been included in the folder, and should be ready to go. It's the reason why this repo is 600 MB+ lol 
 
+> JUST KIDDING, THE ABOVE STATEMENT IS ONLY TRUE FOR THE .ZIP FILE VERSION, NOT FOR THE GITHUB VERSION. FOR THE GITHUB VERSION, BOTH OF THOSE NEED TO BE INSTALLED. BOTH OF THOSE FOLDERS (there are two RANNET folders) have been ZIPPED AND SENT IN THE WEBEX CHAT. UNZIP IT INTO THE MODELS FOLDER, AND YOU SHOULD BE GOOD TO GO!!
 
 &nbsp; &nbsp;
 
