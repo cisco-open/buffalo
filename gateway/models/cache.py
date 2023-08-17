@@ -2,6 +2,7 @@ import torch
 import faiss
 import os
 from transformers import AutoTokenizer, AutoModel
+from langchain.document_loaders import DirectoryLoader, TextLoader  # Import TextLoader here
 
 from langchain.document_loaders import TextLoader  
 from langchain.indexes import VectorstoreIndexCreator 
@@ -12,7 +13,7 @@ class QACache:
     def __init__(self, 
                  default_model="princeton-nlp/sup-simcse-bert-base-uncased", 
                  embedding=None, 
-                 file_path='docs/employee_info.txt', 
+                 file_path='EnterpriseGateway/docs', 
                  threshold=0.8):
         
         os.environ["OPENAI_API_KEY"] = "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"
@@ -33,11 +34,14 @@ class QACache:
 
 
 
-    def initialize_index(self):
-        loader = TextLoader(self.file_path)
+    # def initialize_index(self):
+    #     loader = TextLoader(self.file_path)
+    #     index = VectorstoreIndexCreator().from_loaders([loader])
+    #     return index
+    def initialize_index(self, directory='EnterpriseGateway/docs'):
+        loader = DirectoryLoader(directory, glob="*.txt")
         index = VectorstoreIndexCreator().from_loaders([loader])
         return index
-
 
     def get_huggingface_embedding(self, text):
         inputs = self.tokenizer(text, return_tensors="pt")
@@ -118,3 +122,5 @@ class QACache:
             return True, self.questions[answer_index], response
        
         return False, None, response
+
+
