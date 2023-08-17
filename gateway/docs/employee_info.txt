@@ -1,0 +1,12 @@
+employee_info.txt
+Name, Salary, Address, Age, Department, Email, Phone, Experience
+
+Alex Johnson, $50000, 123 Main Street, 30, Sales, alex.johnson@email.com, +1 (555) 123-4567, 5 years
+Emily Smith, $45000, 456 Oak Avenue, 28, Marketing, emily.smith@email.com, +1 (555) 987-6543, 3 years
+John Doe, $60000, 789 Elm Street, 35, Engineering, john.doe@email.com, +1 (555) 987-3210, 8 years
+Sarah Williams, $55000, 101 Maple Lane, 32, Human Resources, sarah.williams@email.com, +1 (555) 456-7890, 6 years
+Michael Brown, $48000, 555 Pine Road, 29, Finance, michael.brown@email.com, +1 (555) 654-3210, 4 years
+Laura Martinez, $52000, 222 Cedar Court, 33, Operations, laura.martinez@email.com, +1 (555) 789-4560, 7 years
+Kevin Lee, $58000, 777 Birch Street, 34, IT, kevin.lee@email.com, +1 (555) 321-9870, 9 years
+Jessica Rodriguez, $42000, 444 Spruce Avenue, 27, Customer Service, jessica.rodriguez@email.com, +1 (555) 456-7891, 2 years
+William Johnson, $62000, 888 Walnut Lane, 36, Sales, william.johnson@email.com, +1 (555) 789-1234, 10 years

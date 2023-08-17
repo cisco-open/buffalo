@@ -1,0 +1,36 @@
+# Enterprise LLM Gateway - Admin Configurable Policy 
+ 
+# Here, admins can specify the settings for their Gateway. 
+# Currently-implemented features are detailed below. 
+
+
+# Section 01) Prompt Layer 
+
+use_prompt : True 
+user_model_choice: True 
+display_knowledge: True 
+
+supported_models: 
+- "gpt3.5"
+- "gpt4"
+- "gptJ"
+- "llama2"
+- "dolly-3b"
+
+# Section 02) Cache Layer 
+
+use_cache: True 
+cache_thresh: "auto"
+cache_default: 0.8 
+
+# Section 03) Exfiltration 
+
+use_exfiltration: True 
+sensitive_info:
+  - "employee_info.txt"
+
+# Section 04) Verification 
+
+explainable_verification: True 
+fact_extractor_default: "xmlr"
+rel_extractor_default: "openie"

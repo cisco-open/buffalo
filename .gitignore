@@ -1,0 +1,4 @@
+gateway/models/rannet_store/*
+gateway/models/rannet-base-v2-en-uncased-model/*
+*.props
+*__pycache__/
