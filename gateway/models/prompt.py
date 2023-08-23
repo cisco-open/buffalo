@@ -9,7 +9,74 @@ class QueryProcessor:
 
     # TODO - THE REDACT METHODS MAY OR MAY NOT BE BEING CALLED -- DOUBLE CHECK THIS! 
     # TODO - can use external library (ex microsoft presidio)
+    def modify_input_for_prompt(self, input_string):
+    # List of regex patterns and their corresponding modifications
+        patterns = [
+            # Coding tasks
+            (r"write a function that", "imagine you are a Python expert and you had to write a function that"),
+            (r"create a program that", "imagine you are an experienced programmer and you need to create a program that"),
+            
+            # Teaching or explaining
+            (r"explain how", "imagine you are teaching someone and you need to explain how"),
+            (r"describe the process of", "imagine you are an instructor and you need to describe the process of"),
+            
+            # Problem-solving
+            (r"solve the problem of", "imagine you are solving the problem of"),
+            (r"find a solution for", "imagine you are tasked with finding a solution for"),
 
+            # Writing
+            (r"write a story about", "imagine you are a storyteller and you need to write a story about"),
+            (r"compose a poem on", "imagine you are a poet and you need to compose a poem on"),
+
+            # Scientific explanation
+            (r"explain the concept of", "imagine you are a scientist and you need to explain the concept of"),
+
+            # Opinion or debate
+            (r"what are your thoughts on", "imagine you are in a debate and you need to share your thoughts on"),
+
+            # Personal narrative
+            (r"tell me about a time when", "imagine you are sharing a personal experience when"),
+
+            # General instructions
+            (r"provide instructions for", "imagine you are giving clear instructions for"),
+
+            # Math problems
+            (r"solve for x in", "imagine you are solving for x in"),
+
+            # History-related
+            (r"describe the historical event of", "imagine you are describing the historical event of"),
+
+            # Geography and travel
+            (r"plan a trip to", "imagine you are planning a trip to"),
+
+            # Technology and gadgets
+            (r"explain how a", "imagine you are explaining how a"),
+
+            # Cooking and recipes
+            (r"create a recipe for", "imagine you are creating a recipe for"),
+
+            # Health and fitness
+            (r"design a workout routine for", "imagine you are designing a workout routine for"),
+
+            # Art and design
+            (r"sketch a drawing of", "imagine you are sketching a drawing of"),
+
+            # Career and job-related
+            (r"prepare for a job interview as", "imagine you are preparing for a job interview as"),
+
+            # Custom patterns
+            # (r"your_pattern_here", "imagine you are customizing the prompt here"),
+
+            # Add more patterns as needed
+        ]
+
+        # Iterate through patterns and modify input if a match is found
+        for pattern, replacement in patterns:
+            if re.search(pattern, input_string, re.IGNORECASE):
+                # Replace the matched substring with the corresponding replacement
+                input_string = re.sub(pattern, replacement, input_string, flags=re.IGNORECASE)
+                break  # Stop processing after the first match
+        return input_string
     @staticmethod
     def redact_phone(s):
         phone_pattern = r'\b(\+\d{1,3}[-.]?)?(\()?(\d{3})(?(2)\))[-. ]?\d{3}[-.]?\d{4}\b'
