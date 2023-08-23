@@ -2,38 +2,37 @@ import torch
 from transformers import pipeline
 import time
 import os 
+import openai 
 
 #from const import DUMMY_ANS
 
 class Model(): 
+ 
     def __init__(self): 
-        self.choice = "bruh" 
+        self.dolly3b = pipeline(model="databricks/dolly-v2-3b", torch_dtype=torch.bfloat16, trust_remote_code=True, device_map="auto")
 
-        if self.choice == "dolly-3b": 
-            self.model_name = "databricks/dolly-v2-3b"
-        else: 
-            self.model_name = "databricks/dolly-v2-3b"
+        self.api_key = "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"
+        openai.api_key = self.api_key
 
-        # TODO make the choice lead to model_name selection 
+ 
+    def generate(self, llm, text): 
+        print(f"(model) Using {llm}, querying w/: {text}")
 
-        print("Creating generator")
-        time.sleep(1)
-        #self.generator = pipeline(model=self.model_name, torch_dtype=torch.bfloat16, trust_remote_code=True, device_map="auto")
-        print("Dummy testing generator created!")
+        res = "<NO VALID LLM>"
 
-    def generate(self, prompt): 
+        if llm == "gpt-3.5": 
+            res = openai.Completion.create(
+                engine="text-davinci-003",  
+                prompt=text,
+                max_tokens=100  # Adjust as needed
+            )
 
-        os.environ["OPENAI_API_KEY"] = "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"
+
+        elif llm == "dolly-3b":
+            res = self.dolly3b(text)[0]["generated_text"] 
 
 
-        print("Waiting for answer w/ ", prompt)
+        return res 
 
-        #res = self.generator(prompt) <-- UNCOMMENT THIS
-        #return res[0]["generated_text"]
-
-        time.sleep(1)
-        print("Returning answer now!")
-
-        #return DUMMY_ANS
 
         

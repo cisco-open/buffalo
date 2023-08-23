@@ -22,6 +22,8 @@ INITIAL_STATE =  {
         'cache_result' : None, 
         'cache_found' : False, 
 
+        'prompt_choice' : None, 
+        'query_dict' : None, 
         'selected_generation' : False,
         
         'start_exfil' : None,
