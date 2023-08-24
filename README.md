@@ -152,6 +152,12 @@ And in Streamlit, our frontend is split into three parts: Col1, Col2A, Col2B
 **Overall**
 - NEED TO ENSURE THAT YML FILE GOES TO ALL MODULES 
 - MAKE IT CONFIGURABLE USING YML FILE 
+- Some way to store session state so can have chat history 
+- Json dictionary from end-to-end (need to discuss some new ideas)
+- Model Comparison (benchmark of prompts to multiple models, give truthfulness score)
+  - Can sample a few datapoints to run check against (show comparison on how they work)
+  - Running multiple models (can ask Vamsi)
+- Using GPT4 to tag (connecting prompt and verification)
 
 **Model-Separation**
 - Change model so we're loading from huggingface + have a dedicated class
@@ -179,6 +185,7 @@ And in Streamlit, our frontend is split into three parts: Col1, Col2A, Col2B
 - Update so prompt/response topics are correct  
 - Need to separate between retrieval augmented correction/generation
   - Will NOT send docs to LLM until we explicitly ask it to
+
 
 **Miscellaneous**
 - Need to create readme
