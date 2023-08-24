@@ -27,7 +27,11 @@ cache_default: 0.8
 
 use_exfiltration: True 
 sensitive_info:
-  - "employee_info.txt"
+  - "Dutch_Republic"
+  - "Symbiosis"
+  - "Heresy"
+path_to_doc: "docs/"
+
 
 # Section 04) Verification 
 
