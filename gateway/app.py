@@ -8,7 +8,7 @@ from models.cache import QACache
 from models.prompt import QueryProcessor 
 from models.leaks import ExfiltrationModel
 from models.verify import VerificationModel 
-
+import yaml
 
 
 def simple_parse(combos):
@@ -24,16 +24,26 @@ def create_server_state():
 
 
 def create_app(server_state):
+    """
+    Reading YAML
+    """
+    with open('admin.yml', 'r') as file:
+        config_setup = yaml.safe_load(file)
+    
+    
     app = Flask(__name__)
     initial_server_state = copy.deepcopy(server_state)
     print("(create_app) > Server state is ", server_state)
 
-    llm_models = Model() 
 
+    """ Initiating """
+    
+    llm_models = Model() 
     processor = QueryProcessor()
     qa_cache = QACache()
     
-    exfiltrator = ExfiltrationModel() 
+    print (config_setup['sensitive_info'])
+    exfiltrator = ExfiltrationModel(file_list=config_setup['sensitive_info'], data_folder_path=config_setup['path_to_doc']) 
     verifier = VerificationModel()  
 
     DOCS_PATH = ".\docs"

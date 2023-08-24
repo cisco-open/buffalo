@@ -2,12 +2,13 @@ import faiss
 import pickle
 import numpy as np
 import pandas as pd
+import os
 
 from rannet import RanNet, RanNetWordPieceTokenizer
 
 class ExfiltrationModel(): 
 
-    def __init__(self): 
+    def __init__(self, file_list = None, data_folder_path = None): 
 
         """
         
@@ -20,9 +21,9 @@ class ExfiltrationModel():
             'vocab_path' :  './models/rannet-base-v2-en-uncased-model/vocab.txt', 
             'ckpt_path' : './models/rannet-base-v2-en-uncased-model/model.ckpt', 
             'config_path' : './models/rannet-base-v2-en-uncased-model/config.json', 
-            'my_data_frame' : './models/rannet_store/my_data_frame_50.pkl', 
-            'vectors' : './models/rannet_store/vectors_50.pkl', 
-            'index' : './models/rannet_store/index_50.pkl'
+            'my_data_frame' : './models/rannet_store/my_data_frame.pkl', 
+            'vectors' : './models/rannet_store/vectors.pkl', 
+            'index' : './models/rannet_store/index.pkl'
         }
 
         EXFILTRATION_CONSTS = {
@@ -44,11 +45,6 @@ class ExfiltrationModel():
             cell_pooling='mean'
         )
 
-        self.filter_list = EXFILTRATION_CONSTS['file_list']
-        self.top_k = EXFILTRATION_CONSTS['top_k']
-
-
-
         # Load data store
         file = open(EXFILTRATION_PATHS['my_data_frame'], 'rb')
         self.my_data_frame = pickle.load(file)
@@ -62,6 +58,44 @@ class ExfiltrationModel():
         self.index = pickle.load(file)
         file.close()
 
+        """ Check for files in docs """
+        directory_path = data_folder_path
+        files = os.listdir(directory_path)
+        for i in files:
+            if i[0] != ".":
+                file_name = (i.split(".")[0])
+                if file_name not in list(self.my_data_frame['category']):
+                    file = open(directory_path+i)
+                    text_input = file.read()
+                    
+                    """ Adding to my_data_frame """
+                    new_row = pd.DataFrame({'category': file_name, 'text': text_input}, index=[0])
+                    self.my_data_frame = pd.concat([self.my_data_frame.loc[:], new_row]).reset_index(drop=True)
+
+                    """ Adding to vector """
+                    tok = self.tokenizer.encode(text_input)
+                    vec = self.rannet_model.predict(np.array([tok.ids]))
+                    self.vectors.append(vec) 
+                    
+                    """ Adding to index """
+                    my_vector = np.array(self.vectors)
+                    my_vector = np.squeeze(my_vector)
+                    vector_dimension = self.vectors[0].shape[1]
+                    self.index = faiss.IndexFlatL2(vector_dimension)
+                    faiss.normalize_L2(my_vector)
+                    self.index.add(my_vector)
+
+        """ Check if the sensitive file-list is empty"""
+        EXFILTRATION_CONSTS['file_list'] = file_list
+
+        self.filter_list = EXFILTRATION_CONSTS['file_list']
+        self.top_k = EXFILTRATION_CONSTS['top_k']
+        
+        """ For quick test """
+        # sample_text = "A dog breed will consistently produce the physical traits, movement and temperament that were developed over decades of selective breeding. For each breed they recognize, kennel clubs and breed registries usually maintain and publish a breed standard which is a written description of the ideal specimen of the breed.[2][3][4] Other uses of the term breed when referring to dogs include pure breeds, cross-breeds, mixed breeds and natural breeds.[5]"
+        # a = self.detect_leak(sample_text)
+        # print (a)
+
 
     def query_based_on_distance(self, search_text, index, vec, my_data_frame):
         #return  
@@ -71,7 +105,8 @@ class ExfiltrationModel():
         faiss.normalize_L2(vec)
         
         
-        k = index.ntotal
+        k = 50
+        print ("here",k)
         distances, ann = index.search(vec, k=k)
         
         results = pd.DataFrame({'distances': distances[0], 'ann': ann[0]})
