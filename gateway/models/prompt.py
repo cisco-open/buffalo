@@ -3,8 +3,9 @@ from nltk.tokenize import sent_tokenize
 class QueryProcessor:
     def __init__(self):
         self.MODEL_COSTS = {
-            "gpt-3.5-turbo": 0.06 / 1000,  # $0.06 per 1000 tokens
-            "gpt-4": 0.08 / 1000  # $0.08 per 1000 tokens
+            "gpt-3.5": 0.06 / 1000,  # $0.06 per 1000 tokens
+            "dolly-3b": 0.01 / 1000,  # $0.06 per 1000 tokens
+            "gpt-4": 0.08 / 1000,  # $0.08 per 1000 tokens
         }
 
     # TODO - THE REDACT METHODS MAY OR MAY NOT BE BEING CALLED -- DOUBLE CHECK THIS! 

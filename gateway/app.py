@@ -35,9 +35,10 @@ def create_app(server_state):
     initial_server_state = copy.deepcopy(server_state)
     print("(create_app) > Server state is ", server_state)
 
-    """ Initiating """
-    llm_model = Model() 
 
+    """ Initiating """
+    
+    llm_models = Model() 
     processor = QueryProcessor()
     qa_cache = QACache()
     
@@ -78,6 +79,27 @@ def create_app(server_state):
                     file_list.append((filename, round(size_kb, 4)))
         
         return {'docs': file_list}, 200
+
+
+
+    # /model --> receives prompt, llm, and returns specified llm answer 
+
+    @app.route('/model', methods=['POST'])
+    def model_post():
+        nonlocal server_state
+
+        data = request.get_json()
+        query_dict = data['query_dict']
+       
+        llm_responses = [] 
+
+        for query in query_dict: 
+            result = llm_models.generate(query_dict[query], query)
+            llm_responses.append(result)
+
+        print("(app) LLM Results", result)
+
+        return json.dumps({'response' : llm_responses})
 
 
 

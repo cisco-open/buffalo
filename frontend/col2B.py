@@ -36,6 +36,9 @@ def col2B():
 
         with colX: 
             st.subheader(f"Prompt Topics: ")
+
+            # Here, need to add the data exfiltration stuf 
+
             st.text(f" - corporate_02.txt ~ 0.1202")
             st.text(f" - rapunzel.txt ~ 0.2681")
             st.text(f" - disney_data.txt ~ 0.1881")
