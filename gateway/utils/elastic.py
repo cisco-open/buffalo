@@ -11,24 +11,28 @@ es = Elasticsearch()
 
 class ElasticVerification(): 
 
-    def __init__(self): 
-        text_files_directory = ".\docs"
-        self.index_text_files(text_files_directory)
+    def __init__(self, dir_path, files_list): 
+
+        # TODO - need to take this from admin.yml 
+        self.index_text_files(dir_path, files_list)
+
 
     # TODO - update so that it only looks at the documents GIVEN to it NOT All! 
 
     # (Helper) Index Text Files 
-    def index_text_files(self, directory_path):
+    def index_text_files(self, directory_path, files_list):
         for filename in os.listdir(directory_path):
 
-            # Only handling text files, at the moment!
+            # TODO - Only handling text files, at the moment!
             if filename.endswith(".txt"):
-                with open(os.path.join(directory_path, filename), 'r', encoding='utf-8') as file:
-                    content = file.read()
-                    doc = nlp(content)
-                    sentences = [sent.text for sent in doc.sents]
-                    for i, sentence in enumerate(sentences):
-                        es.index(index="text_index", id=f"{filename}_{i}", body={"text": sentence, "file": filename, "index": i})
+                # TODO - Once looking at given docs, can remove "not files_list" check 
+                if not files_list or (filename.split(".")[0]) in files_list: 
+                    with open(os.path.join(directory_path, filename), 'r', encoding='utf-8') as file:
+                        content = file.read()
+                        doc = nlp(content)
+                        sentences = [sent.text for sent in doc.sents]
+                        for i, sentence in enumerate(sentences):
+                            es.index(index="text_index", id=f"{filename}_{i}", body={"text": sentence, "file": filename, "index": i})
 
 
 

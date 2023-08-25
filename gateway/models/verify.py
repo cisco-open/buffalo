@@ -19,7 +19,8 @@ class VerificationModel():
     def __init__(self, 
                  fact_threshold = 0.9, 
                  fact_model_name = "lighteternal/fact-or-opinion-xlmr-el", 
-                 rel_threshold = 0.66): 
+                 rel_threshold = 0.66, 
+                 data_folder_path = None): 
         
         self.FACT_THRESHOLD = fact_threshold
         self.fact_model_name = fact_model_name
@@ -31,7 +32,8 @@ class VerificationModel():
             'openie.affinity_probability_cap': rel_threshold,
         }
 
-        self.elastic = ElasticVerification()
+        # TODO - Only use docs that come from exfiltrator 
+        self.elastic = ElasticVerification(data_folder_path, None)
 
 
     @staticmethod
@@ -135,7 +137,8 @@ class VerificationModel():
 
     # Input - list (triplets) and docs (filepaths), output (tbd)
     def match_triplets(self, list_of_triplets, docs): 
-
+        
+        # TODO - Use docs instead of everything inside! 
         list_results = [] 
         if not list_of_triplets: 
             return list_results 
@@ -152,8 +155,6 @@ class VerificationModel():
                 print("Currently looking at this triplet", triplet)
                 result['sub'], result['rel'], result['obj'] = triplet  
                 result['triplet'] = triplet 
-
-                # TODO - compute the actual matches here (currently placeholder)
 
                 match, score, doc, triplet, context = self.elastic.triplet_match(triplet, docs)
 

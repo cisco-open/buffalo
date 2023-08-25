@@ -49,7 +49,8 @@ def create_app(server_state):
     
     verifier = VerificationModel(fact_threshold=config_setup['fact_threshold'],
                                  fact_model_name=config_setup['fact_model_name'], 
-                                 rel_threshold=config_setup['rel_threshold'])  
+                                 rel_threshold=config_setup['rel_threshold'], 
+                                 data_folder_path=config_setup['path_to_doc'])  
 
     
     """ 00) General Methods """
