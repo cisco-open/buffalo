@@ -19,11 +19,8 @@ lhs, _, rhs = st.columns([0.3, 0.1, 0.6])
 with lhs: 
     col1()
 
-with _: 
-    pass # <-- empty space (col)
+with _: pass # Empty space (col)
 
 with rhs: 
     col2A()
-
-    if st.session_state.demo_state['selected_generation']: 
-        col2B() 
+    if st.session_state.demo_state['selected_generation']: col2B() 

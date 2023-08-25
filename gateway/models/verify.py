@@ -16,16 +16,19 @@ Need to download CoreNLP (???)
 
 class VerificationModel(): 
 
-    def __init__(self): 
+    def __init__(self, 
+                 fact_threshold = 0.9, 
+                 fact_model_name = "lighteternal/fact-or-opinion-xlmr-el", 
+                 rel_threshold = 0.66): 
         
-        self.FACT_THRESHOLD = 0.9
+        self.FACT_THRESHOLD = fact_threshold
+        self.fact_model_name = fact_model_name
 
-        self.fact_model_name = "lighteternal/fact-or-opinion-xlmr-el"
         self.fact_tokenizer = AutoTokenizer.from_pretrained(self.fact_model_name)
         self.fact_model = AutoModelForSequenceClassification.from_pretrained(self.fact_model_name)
 
         self.properties = {
-            'openie.affinity_probability_cap': 2 / 3,
+            'openie.affinity_probability_cap': rel_threshold,
         }
 
         self.elastic = ElasticVerification()
@@ -65,29 +68,33 @@ class VerificationModel():
     # Input - text (string), output (list of facts)
     def fact_vs_opinion(self, text): 
         # First, split sentence into clauses 
-        clauses = VerificationModel.split_into_clauses(text)
 
-        facts = []
-        for clause in clauses: 
+        facts = [] 
 
-            if len(clause.split()) <= 1: 
-                facts.append((clause, None)) 
-                continue 
+        for output in text: 
+            clauses = VerificationModel.split_into_clauses(output)
+            num_phrases = len(clauses)
 
-            inputs = self.fact_tokenizer(clause, return_tensors="pt")
+            facts = []
+            for clause in clauses: 
 
-            # Classify the text as fact or opinion
-            with torch.no_grad():
-                logits = self.fact_model(**inputs).logits
-                predicted_class = logits.argmax().item()
+                if len(clause.split()) <= 1: 
+                    facts.append((clause, None)) 
+                    continue 
 
-            # Determine the classification label
-            classification_label = "Fact" if predicted_class == 1 else "Opinion"
-            print(f"({classification_label}) - {clause}")
+                inputs = self.fact_tokenizer(clause, return_tensors="pt")
 
-            # TODO - Figure out how to get similarity score like they do in HuggingFace 
+                # Classify the text as fact or opinion
+                with torch.no_grad():
+                    logits = self.fact_model(**inputs).logits
+                    predicted_class = logits.argmax().item()
 
-            facts.append((clause, predicted_class))
+                # Determine the classification label
+                classification_label = "Fact" if predicted_class == 1 else "Opinion"
+                print(f"({classification_label}) - {clause}")
+
+                # TODO - Figure out how to get similarity score like they do in HuggingFace 
+                facts.append((clause, predicted_class))
 
 
         actual_facts = [] 
@@ -102,9 +109,7 @@ class VerificationModel():
                 annotated_txt.append((clause, "Fact"))
                 actual_facts.append(clause)
 
-
-
-        return actual_facts, annotated_txt
+        return actual_facts, num_phrases, annotated_txt
    
 
     # Input - list (clauses), output (either None or tuple(e1, rel, e2))
@@ -125,7 +130,6 @@ class VerificationModel():
                     
                 relations.append(temp)
               
-
         return relations 
 
 

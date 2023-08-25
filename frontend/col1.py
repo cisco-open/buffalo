@@ -1,24 +1,30 @@
 import streamlit as st
 import requests 
-from const import LLM_OPTIONS, BASE_PROMPT, INPUT_SUCCESS, DUMMY_DOCS, SERVER 
+from const import BASE_PROMPT, INPUT_SUCCESS, SERVER 
 
 
 def col1(): 
 
     st.title("Enterprise LLM Gateway")
-    model_options = st.multiselect('Select usable Large Language Model(s)', LLM_OPTIONS)
-    
 
+
+    # 01) Model Selection 
+
+    response = requests.get(f"{SERVER}/model_list")
+    model_list = response.json()['model_list']
+
+    model_options = st.multiselect('Select usable Large Language Model(s)', model_list)
+    
     if not st.session_state.demo_state['select_llms']: 
         print(f"(col1) No models currently selected.")
         st.session_state.demo_state['select_llms'] = model_options 
 
-
     elif model_options != st.session_state.demo_state['select_llms']: 
-        print(f"Change in selection, modifying models now!")
+        print(f"(col1) Change in selection, modifying models now!")
         st.session_state.demo_state['select_llms'] = model_options 
 
     
+    # 02) Entering Prompt 
 
     with st.form("my_form"):
         text = st.text_area("Enter Prompt:", BASE_PROMPT)
@@ -34,26 +40,35 @@ def col1():
             st.session_state.demo_state['input_prompt'] = text
             st.session_state.demo_state['selected_generation'] = False  
 
+            # 02A) Pass prompt/llms through Prompt Layer 
+
             with st.spinner('Optimizing...'):
                 payload = {'prompt' : text, 'llms' : st.session_state.demo_state['select_llms']}
                 response = requests.post(f"{SERVER}/prompt/post", json=payload)
-                cost_options = response.json()['cost_options']
+                print(f"(col1) Received cost options from Prompt Layer.")
 
-                st.session_state.demo_state['cost_options'] = cost_options
+                st.session_state.demo_state['input_list_redacted'] = response.json()['input_list_redacted']
+                st.session_state.demo_state['input_list'] = response.json()['input_list']
+                st.session_state.demo_state['cost_options'] = response.json()['cost_options']
                 st.session_state.demo_state['cost_options_ready'] = True 
 
+                print(f"(col1) Input List Redacted: {st.session_state.demo_state['input_list_redacted']}")
+                print(f"(col1) Cost Options: {st.session_state.demo_state['cost_options']}")
 
+
+
+            # 02B) Pass prompt/llms through Cache Layer 
 
             with st.spinner('Searching cache...'):
 
-                print(f"SEARCHING CACHE WITH [{text}]")
-                payload = {'prompt' : text, 'llms' : st.session_state.demo_state['select_llms'], 'add' : False, 'threshold' : 0.8}
-                response = requests.post(f"{SERVER}/cache/post", json=payload)
+                print(f"(col1) Searching cache w/ {len(st.session_state.demo_state['input_list'])} queries.")
 
-                st.session_state.demo_state['queries'] = response.json()['queries'] 
+                # TODO - removed threshold, changed prompt to prompt_list 
+                payload = {'prompt_list' : st.session_state.demo_state['input_list']} 
+                response = requests.post(f"{SERVER}/cache/search/post", json=payload) 
+
                 st.session_state.demo_state['cache_found'] = response.json()['cache_found'] 
-                st.session_state.demo_state['cache_result'] = response.json()['cache_results']  
-
+                st.session_state.demo_state['cache_result'] = response.json()['cache_results'] 
                 st.session_state.demo_state['cache_result_ready'] = True 
 
 
@@ -66,16 +81,25 @@ def col1():
     
     st.divider() 
 
-    st.title("Knowledge Base 📁")
+
+    # 03) Displaying Knowledge Base (if toggled on, default True)
 
     response = requests.get(f"{SERVER}/docs")
     docs_list = response.json()['docs']
+    docs_path = response.json()['path']
+    docs_show = response.json()['show']
 
-    max_filename_length = max(len(filename) for filename, _ in docs_list)
+    st.title("Knowledge Base 📁")
 
-    with st.expander(f"Currently loaded documents ({len(docs_list)}):"):
-        for doc, size in docs_list: 
-            formatted = f" - {doc:<{max_filename_length}} -- Size: {round(size, 2):>6.2f} kb"
-            st.text(formatted)
+    if not docs_show: 
+        st.info(f"Displaying of KB is off. This can be toggled in gateway/admin.yml")
+    
+    else: 
+        max_filename_length = max(len(filename) for filename, _ in docs_list)
 
-        st.caption("Pointing to folder /docs/. This relative path be changed in const.py")
+        with st.expander(f"Currently loaded documents ({len(docs_list)}):"):
+            for doc, size in docs_list: 
+                formatted = f" - {doc:<{max_filename_length}} -- Size: {round(size, 2):>6.2f} kb"
+                st.text(formatted)
+
+            st.caption(f"Pointing to folder {docs_path}. This relative path be changed in gateway/admin.yml")

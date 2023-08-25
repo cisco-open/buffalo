@@ -3,8 +3,10 @@ import streamlit as st
 from annotated_text import annotated_text 
 import extra_streamlit_components as stx
 
-from const import *
+from const import TAB_TITLES, SERVER
 
+
+#  'verify_metrics' : {'num_phrases' : 0, 'num_facts' : 0, 'num_triplets' : 0, 'num_matched' : 0, 'docs_found_in' : {}}
 
 def col2B(): 
     st.title("Output Exfiltration, Verification.")
@@ -17,108 +19,120 @@ def col2B():
             st.subheader("Please enter an input prompt.")
             st.divider()
             st.subheader("Please wait for an LLM output.")
+
         else: 
-            st.subheader(f"(User) {st.session_state.demo_state['input_prompt']}")
+            st.subheader(f"(User) {' '.join(st.session_state.demo_state['input_list_redacted'])}")
             st.divider()
-            st.subheader(f"(LLMs) {st.session_state.demo_state['output_response']}")
+            st.subheader(f"(LLMs) {' '.join(st.session_state.demo_state['output_list_exfiltrated'])}")
 
             st.markdown("")            
-            for idx, elem in enumerate(st.session_state.demo_state['output_response_list']):
+            for idx, elem in enumerate(st.session_state.demo_state['output_list_exfiltrated']):
                 st.markdown(f"(Query {idx+1}) LLM Output: {elem}")
         
 
 
-    #Doc Identification
+    # Doc Identification
     if val == 1: 
-        sensitivity = st.slider(SENSITIVITY_SLIDER_TEXT, 1, 4, 2)
-
-        colX, colY = st.columns(2)
-
-        with colX: 
-            st.subheader(f"Prompt Topics: ")
-
-            # Here, need to add the data exfiltration stuf 
-
-            st.text(f" - corporate_02.txt ~ 0.1202")
-            st.text(f" - rapunzel.txt ~ 0.2681")
-            st.text(f" - disney_data.txt ~ 0.1881")
-
-        with colY: 
-            st.subheader(f"Response Topics:")
-            st.text(f" - rapunzel.txt ~ 0.4981")
-            st.text(f" - disney_data.txt ~ 0.2395")
-
-        st.divider() 
-
         st.subheader("Exfiltration Check on Documents in Knowledge Base.")
 
-        with st.spinner('Calculating Leaks...'):
-
-            payload = {'text' : st.session_state.demo_state['output_response']}
-            response = requests.post(f"{SERVER}/exfiltrator/post", json=payload)
-            leak = response.json()['leak']
-
-            #st.session_state.demo_state['leak'] = leak
-            #st.session_state.demo_state['leak'] = ["employee_info.txt"]
-
-            print("Got the following leak(s)", leak)
-        
-        if st.session_state.demo_state['leak']: 
+        if st.session_state.demo_state['any_leak']: 
             st.error('Data leak detected', icon="🚨")
-            for doc in st.session_state.demo_state['leak']: 
-                st.error(f"Document Name: {doc}", icon="🚨")
+            for idx, doc_match_per_prompt in enumerate(st.session_state.demo_state['leak_list']): 
+                if doc_match_per_prompt or len(doc_match_per_prompt) > 0: 
+                    # Print out the doc w/ the highest match score (the first entry, idx 0)
+                    st.error(f"(Query {idx+1}) Document Name: {doc_match_per_prompt[0]}", icon="🚨")
 
         else:
             st.success("No information was leaked", icon="✅")
+        
+        st.divider() 
+        
+        with st.spinner('Determining Topics...'):
 
+            # TODO - Here, need to add the data exfiltration stuff (Raunak already has a function for this!!)
+
+            payload = {'input' : st.session_state.demo_state['input_list_redacted'], 'output' : st.session_state.demo_state['output_list_exfiltrated']}
+
+            response = requests.post(f"{SERVER}/exfiltrator/topic/post", json=payload) # TODO - add this in! 
+            st.session_state.demo_state['input_topic_list'] = response.json()['input_topic_list'] 
+            st.session_state.demo_state['output_topic_list'] = response.json()['output_topic_list'] 
+
+            print(f"Input Topics: {st.session_state.demo_state['input_topic_list']}")
+            print(f"Output Topics: {st.session_state.demo_state['output_topic_list']}")
+
+            colX, colY = st.columns(2)
+            doc_list = []
+
+            with colX: 
+                st.subheader(f"Prompt Documents: ")
+                for entry in st.session_state.demo_state['input_topic_list']: 
+                    if len(entry) > 0: 
+                        for res in entry: 
+                            doc_list.append(res[0])
+                            st.text(f" - {res[0]} ~ {res[1]}")
+
+            with colY: 
+                st.subheader(f"Response Documents:")
+                if len(st.session_state.demo_state['output_topic_list']) > 0: 
+                    for entry in st.session_state.demo_state['output_topic_list']: 
+                        for res in entry: 
+                            doc_list.append(res[0])
+                            st.text(f" - {res[0]} ~ {res[1]}")
+
+            st.session_state.demo_state['triplet_doc_list'] = doc_list
+
+            st.text("")
+            st.caption("The 'score' is the distance, meaning lower = better match!")
 
     #Fact vs. Opinion Classifier 
     if val == 2: 
-        if st.session_state.demo_state['leak']: 
+        if st.session_state.demo_state['any_leak']: 
             st.error(f"Part of the LLM response may have been removed due to Data Exfiltration leakage.", icon="🚨")
 
-        payload = {'text' : st.session_state.demo_state['output_response']}
+        # TODO - need to somehow specify which docs to check against, based on step previously 
+        # TODO - ideally, we'd like to only check documents relevant to each subprompt/suboutput 
 
+        payload = {'output_list' : st.session_state.demo_state['output_list_exfiltrated']}
         response = requests.post(f"{SERVER}/verify/facts/post", json=payload)
-        list_of_facts = response.json()['list_of_facts']
-        annotated_txt = response.json()['annotated_txt']
 
-        st.session_state.demo_state['list_of_facts'] = list_of_facts
-        
+        st.session_state.demo_state['list_of_facts'] = response.json()['list_of_facts']
+        st.session_state.demo_state['verify_metrics']['num_phrases'] = response.json()['num_phrases']
+        st.session_state.demo_state['verify_metrics']['num_facts'] = len(st.session_state.demo_state['list_of_facts'])
+
         st.subheader("Labelling with Fact-vs-Opinion Classifier")
-        annotated_text(format_annotated_txt(annotated_txt))
+        annotated_text(format_annotated_txt(response.json()['annotated_txt']))
 
         st.divider()
 
-        st.subheader("Extracted facts from LLM Response")
-        for idx, fact in enumerate(list_of_facts): 
+        st.subheader(f"Extracted {st.session_state.demo_state['verify_metrics']['num_facts'] } facts from LLM Response:")
+        for idx, fact in enumerate(st.session_state.demo_state['list_of_facts']): 
             st.markdown(f"{idx+1}. {fact}")
 
 
     """
     
-    Previously, used to be AMR code here. This old code has been saved and will eventually be added. 
+    TODO - Previously, used to be AMR code here. This old code has been saved and will eventually be added. 
 
-    #st.graphviz_chart(states['amr_grp_inp'])        
-    #st.graphviz_chart(states['amr_grp_out'])
+    #st.graphviz_chart(st.session_state.demo_state['amr_grp_inp'])        
+    #st.graphviz_chart(st.session_state.demo_state['amr_grp_out'])
     
     """
     
     # Information Extraction
     if val == 3: 
-        model_options = st.selectbox('Please select an Information Extraction (IE) method. Default methodology, Stanford OpenIE.', ["Stanford OpenIE", "UIUC AMR-IE"])
+        model_options = st.selectbox('Please select an Information Extraction (IE) method. Default methodology, Stanford OpenIE.', ["Stanford OpenIE"]) # TODO - Add in UIUC AMR-IE support 
 
         payload = {'list_of_facts' : st.session_state.demo_state['list_of_facts'], 'model' : model_options}
         response = requests.post(f"{SERVER}/verify/ie/post", json=payload)
-        list_of_relations = response.json()['list_of_relations']
-
-        st.session_state.demo_state['list_of_triplets'] = list_of_relations
-
+        st.session_state.demo_state['list_of_relations'] = response.json()['list_of_relations']
 
         st.divider() 
 
-        st.subheader("Extracted Relations from Facts")
-        for idx, relation in enumerate(list_of_relations): 
+        num_triplets = len([item for item in st.session_state.demo_state['list_of_relations'] if item is not None])
+        st.session_state.demo_state['verify_metrics']['num_triplets'] = num_triplets 
+        st.subheader(f"Extracted {num_triplets} Relations from Facts")
+
+        for idx, relation in enumerate(st.session_state.demo_state['list_of_relations']): 
             if relation is None: 
                 res = "<No valid triplets found for clause>"
             else: 
@@ -134,7 +148,7 @@ def col2B():
 
 
         st.text("")   
-        st.caption("Integrations for coreference resolution and cross-fact information extraction will soon be added!   ")
+        st.caption("Integrations for coreference resolution and cross-fact information extraction will soon be added!")
 
 
 
@@ -142,33 +156,25 @@ def col2B():
     # Triplet Matching 
     if val == 4: 
 
-        docs_to_search = [] 
-
-        #st.session_state.demo_state['list_of_triplets'] = [("Rapunzel", "had", "long hair"), ("Little Red-Cap", "had been picking", "flowers")]
-
-        payload = {'list_of_triplets' : st.session_state.demo_state['list_of_triplets'], 'docs_to_search' : docs_to_search}
+        payload = {'list_of_relations' : st.session_state.demo_state['list_of_relations'], 'docs_to_search' : st.session_state.demo_state['triplet_doc_list']}
         response = requests.post(f"{SERVER}/verify/triplet/post", json=payload)
         triplet_matches = response.json()['triplet_matches']
+        # TODO - move num_matched and docs_found_in calculations into gateway backend 
 
-        docs_string = ", ".join(docs_to_search)
-        st.info(f'Only utilizing documents ({docs_string}). To change this, increase sensitivity in "Doc Identification" section.', icon="ℹ️")
+        docs_string = ", ".join(st.session_state.demo_state['triplet_doc_list'])
+        st.info(f'Only utilizing documents ({docs_string}). To change this, modify sensitivity in gateway/admin.yml.', icon="ℹ️")
+        st.caption('Please note that Triplet Matching can be quite finnicky/sensitive. Improvements to come!')
         st.caption('_Coming soon, CrossVal for triplet verification https://arxiv.org/pdf/2008.06995.pdf_ 🥳')
         st.divider()
-
-        if triplet_matches: 
-            num_facts = len(triplet_matches)
 
         tab_titles = [] 
         info_dump = [] 
 
+        num_matched = 0 
+        docs_found_in = {}
+
         for idx, entry in enumerate(triplet_matches):
-
-            #curr_trip = st.session_state.demo_state['list_of_triplets'][idx]
-            #print(curr_trip)
-            #triplet_str = ",".join(curr_trip)
-            #print(triplet_str)
-
-            print(entry)
+            print(f"(col2B) Triplet Matching Entry: {entry}")
 
             tab_titles.append(f"Fact {idx+1}.")
 
@@ -181,8 +187,19 @@ def col2B():
                 match_string = f"Percent match: {entry['score']} ({entry['doc']}) | Searching for: ({entry['sub']}, {entry['rel']}, {entry['obj']})"
                 match_triplet = entry['match_triplet']
                 match_context = entry['match_context']
+                
+                num_matched += 1 
+                if entry['doc'] in docs_found_in: 
+                    docs_found_in[entry['doc']] += 1 
+                else: 
+                    docs_found_in[entry['doc']] = 1 
+
 
             info_dump.append([match_string, match_triplet, match_context])
+
+
+        st.session_state.demo_state['verify_metrics']['num_matched'] = num_matched
+        st.session_state.demo_state['verify_metrics']['docs_found_in'] = docs_found_in
 
         if len(tab_titles) != 0: 
             tab_list = st.tabs(tab_titles)
@@ -191,8 +208,6 @@ def col2B():
                 info = info_dump[idx]
                 with tab: 
                     st.info(info[0], icon="📖")
-                    #st.subheader("Closest Triplet(s):")
-                    #st.text(info[2])
                     st.subheader("Relevant context:")
                     st.caption(info[1])
 
@@ -222,26 +237,52 @@ def col2B():
         
         """
 
-        st.subheader("Overall Validity: ")
+        num_phrases = st.session_state.demo_state['verify_metrics']['num_phrases']
+        num_facts = st.session_state.demo_state['verify_metrics']['num_facts']
+        num_triplets = st.session_state.demo_state['verify_metrics']['num_triplets']
+        num_matched = st.session_state.demo_state['verify_metrics']['num_matched']
+        docs_found_in = st.session_state.demo_state['verify_metrics']['docs_found_in']
+        # Remember, docs_found_in is a dict in the format {'doc_name' : 'num_facts_found_in_this_doc'}
 
-        #st.error(f"This has NOT been implemented yet, but will be very soon! See frontend/col2B line 193 for comments!", icon="🚨")
+        print(f"(col2B) Verify Metrics: {st.session_state.demo_state['verify_metrics']}")
+
+        inverted_dict = {}
+        for item, freq in docs_found_in.items():
+            if freq in inverted_dict: inverted_dict[freq].append(item)
+            else: inverted_dict[freq] = [item]
+
+        # Now, we have an inverted, sorted dictionary in format {'num_facts_found' : 'doc_name'}
+        sorted_inverted_docs = sorted(inverted_dict.items(), key=lambda x: x[0], reverse=True)
+        formatted_doc_list = [[item, f"{freq} facts", round(freq / num_matched * 100, 1) if num_matched != 0 else None] for freq, item in sorted_inverted_docs]
+
+        scores = {
+            'overall_val' : round(num_matched / num_facts * 100, 1) if num_facts != 0 else None, 
+            'overall_dev' : round(num_facts / num_phrases * 100, 1) if num_facts != 0 else None, 
+        }
+
+        st.subheader("Overall Validity: ")
       
-        colA, colB, colC = st.columns(3)    
-        colA.metric("Overall Validity", "87%", "10%")
-        colB.metric("rapunzel.txt", "72%", "8%")
-        colC.metric("disney_data.txt", "10%", "6%")
+        cols = st.columns(len(st.session_state.demo_state['verify_metrics']['docs_found_in']) + 1)   
+        for idx, col in enumerate(cols): 
+            if idx == 0: 
+                col.metric("Overall Validity", f"{scores['overall_val']}%", f"{scores['overall_dev']}")
+            else: 
+                res = formatted_doc_list[idx-1]
+                print(f"(col2B) Res: {res}")
+                col.metric(res[0][0], res[1], res[2])
 
         st.caption("The large number represents the confidence score. The smaller number represents the error margin.")
+        
         st.caption("The overall validity score is simply the number of verified facts divided by number of identified facts.")
         st.caption("The overall validity deviation score is given by the number of identified facts over the number of total phrases")
+
         st.caption("The individual document scores reflect the average of the individual triplet-match scores across facts verified from a given document.")
-        st.caption("Currently, this metric is the inverse of how many matched_facts")
 
         st.divider() 
 
-        st.subheader("Of the 9 phrases identified in the response, 8 were identified as facts.")
-        st.subheader("Of these 8 facts, 7 were able to be decomposed into entity-relation-entity triplets")
-        st.subheader("Of these 7 relation triplets, 5 were sufficiently matched across 1 document.")
+        st.subheader(f"Of the {num_phrases} phrases identified in the response, {num_facts} were identified as facts.")
+        st.subheader(f"Of these {num_facts} facts, {num_triplets} were able to be decomposed into entity-relation-entity triplets")
+        st.subheader(f"Of these {num_triplets} relation triplets, {num_matched} were sufficiently matched across {len(docs_found_in)} documents.")
 
         st.balloons() 
 

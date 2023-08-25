@@ -15,17 +15,20 @@ class ElasticVerification():
         text_files_directory = ".\docs"
         self.index_text_files(text_files_directory)
 
-
+    # TODO - update so that it only looks at the documents GIVEN to it NOT All! 
 
     # (Helper) Index Text Files 
     def index_text_files(self, directory_path):
         for filename in os.listdir(directory_path):
-            with open(os.path.join(directory_path, filename), 'r', encoding='utf-8') as file:
-                content = file.read()
-                doc = nlp(content)
-                sentences = [sent.text for sent in doc.sents]
-                for i, sentence in enumerate(sentences):
-                    es.index(index="text_index", id=f"{filename}_{i}", body={"text": sentence, "file": filename, "index": i})
+
+            # Only handling text files, at the moment!
+            if filename.endswith(".txt"):
+                with open(os.path.join(directory_path, filename), 'r', encoding='utf-8') as file:
+                    content = file.read()
+                    doc = nlp(content)
+                    sentences = [sent.text for sent in doc.sents]
+                    for i, sentence in enumerate(sentences):
+                        es.index(index="text_index", id=f"{filename}_{i}", body={"text": sentence, "file": filename, "index": i})
 
 
 

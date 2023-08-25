@@ -174,11 +174,12 @@ And in Streamlit, our frontend is split into three parts: Col1, Col2A, Col2B
 **Cache-Layer**
 - someway to give cache more than one document 
 - Remove the cache implementation where we're calling gpt from there 
-
+- If cache partial hit, need option to ONLY query LLM w/ non-cache hit (some way to specify for each)
 
 **Exfiltration****
   - Remove squad documents, point to docs in ./docs
   - Figure out what's wrong w/ Data Exfiltration leak detection 
+  - Need to do the verification check in reverse! (so once LLM, before showing results, run LLM check)
 
 
 **Verification** 

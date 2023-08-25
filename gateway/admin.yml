@@ -4,37 +4,40 @@
 # Currently-implemented features are detailed below. 
 
 
+supported_models: 
+- "gpt-3.5"
+- "dolly-3b"
+api_keys: 
+  "gpt-3.5": "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"
+
+path_to_doc: "docs/"
+show_docs: True 
+
 # Section 01) Prompt Layer 
 
-use_prompt : True 
-user_model_choice: True 
-display_knowledge: True 
+use_prompt : True # HAS NOT BEEN ADDED YET 
+user_model_choice: True # HAS NOT BEEN ADDED YET 
 
-supported_models: 
-- "gpt3.5"
-- "gpt4"
-- "gptJ"
-- "llama2"
-- "dolly-3b"
 
 # Section 02) Cache Layer 
 
-use_cache: True 
+use_cache: True # HAS NOT BEEN ADDED YET 
 cache_thresh: "auto"
 cache_default: 0.8 
 
+
 # Section 03) Exfiltration 
 
-use_exfiltration: True 
+use_exfiltration: True # HAS NOT BEEN ADDED YET 
 sensitive_info:
-  - "Dutch_Republic"
-  - "Symbiosis"
-  - "Heresy"
-path_to_doc: "docs/"
+  - "employee_info.txt" 
 
 
 # Section 04) Verification 
 
-explainable_verification: True 
-fact_extractor_default: "xmlr"
-rel_extractor_default: "openie"
+fact_threshold: 0.9 
+fact_model_name: "lighteternal/fact-or-opinion-xlmr-el"
+rel_threshold: 0.66
+
+explainable_verification: True  # HAS NOT BEEN ADDED YET 
+rel_extractor_default: "openie" # HAS NOT BEEN ADDED YET 
