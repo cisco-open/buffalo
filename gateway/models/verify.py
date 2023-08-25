@@ -74,10 +74,10 @@ class VerificationModel():
         facts = [] 
 
         for output in text: 
+            print(f"(verify) Looking at: {output}")
             clauses = VerificationModel.split_into_clauses(output)
             num_phrases = len(clauses)
 
-            facts = []
             for clause in clauses: 
 
                 if len(clause.split()) <= 1: 

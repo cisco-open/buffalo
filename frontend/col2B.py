@@ -155,7 +155,7 @@ def col2B():
 
     # Triplet Matching 
     if val == 4: 
-
+        # TODO - if there are NO docs to search, endpoint should search ALL the code 
         payload = {'list_of_relations' : st.session_state.demo_state['list_of_relations'], 'docs_to_search' : st.session_state.demo_state['triplet_doc_list']}
         response = requests.post(f"{SERVER}/verify/triplet/post", json=payload)
         triplet_matches = response.json()['triplet_matches']
@@ -246,14 +246,17 @@ def col2B():
 
         print(f"(col2B) Verify Metrics: {st.session_state.demo_state['verify_metrics']}")
 
-        inverted_dict = {}
+        inverted_list = [] 
         for item, freq in docs_found_in.items():
-            if freq in inverted_dict: inverted_dict[freq].append(item)
-            else: inverted_dict[freq] = [item]
+            inverted_list.append((freq, item))
+
+        print(f"(col2B) Inverted List: {inverted_list}")
 
         # Now, we have an inverted, sorted dictionary in format {'num_facts_found' : 'doc_name'}
-        sorted_inverted_docs = sorted(inverted_dict.items(), key=lambda x: x[0], reverse=True)
-        formatted_doc_list = [[item, f"{freq} facts", round(freq / num_matched * 100, 1) if num_matched != 0 else None] for freq, item in sorted_inverted_docs]
+
+        sorted_inverted_list = sorted(inverted_list, key=lambda x: x[0])
+        formatted_doc_list = [[item, f"{freq} facts", round(freq / num_matched * 100, 1) if num_matched != 0 else None] for freq, item in sorted_inverted_list]
+
 
         scores = {
             'overall_val' : round(num_matched / num_facts * 100, 1) if num_facts != 0 else None, 
@@ -261,7 +264,9 @@ def col2B():
         }
 
         st.subheader("Overall Validity: ")
-      
+        print(f"(col2B) Docs found in: {st.session_state.demo_state['verify_metrics']['docs_found_in']}")
+        print(f"(col2B) Formatted doc list: {formatted_doc_list}")
+
         cols = st.columns(len(st.session_state.demo_state['verify_metrics']['docs_found_in']) + 1)   
         for idx, col in enumerate(cols): 
             if idx == 0: 
@@ -269,7 +274,7 @@ def col2B():
             else: 
                 res = formatted_doc_list[idx-1]
                 print(f"(col2B) Res: {res}")
-                col.metric(res[0][0], res[1], res[2])
+                col.metric(res[0], res[1], res[2])
 
         st.caption("The large number represents the confidence score. The smaller number represents the error margin.")
         

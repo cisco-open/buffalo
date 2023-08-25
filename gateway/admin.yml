@@ -31,6 +31,7 @@ cache_default: 0.8
 use_exfiltration: True # HAS NOT BEEN ADDED YET 
 sensitive_info:
   - "employee_info.txt" 
+  - "secret_project.txt"
 
 
 # Section 04) Verification 
