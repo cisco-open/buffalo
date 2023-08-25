@@ -13,7 +13,15 @@ class ElasticVerification():
 
     def __init__(self, dir_path, files_list): 
 
-        # TODO - need to take this from admin.yml 
+        self.es_index = "text_index"
+
+        # Delete the index
+        if es.indices.exists(self.es_index):
+            es.indices.delete(index=self.es_index)
+            print(f"(elastic) Index '{self.es_index}' deleted.")
+        else:
+            print(f"(elastic) Index '{self.es_index}' does not exist.")
+
         self.index_text_files(dir_path, files_list)
 
 
@@ -32,7 +40,7 @@ class ElasticVerification():
                         doc = nlp(content)
                         sentences = [sent.text for sent in doc.sents]
                         for i, sentence in enumerate(sentences):
-                            es.index(index="text_index", id=f"{filename}_{i}", body={"text": sentence, "file": filename, "index": i})
+                            es.index(index=self.es_index, id=f"{filename}_{i}", body={"text": sentence, "file": filename, "index": i})
 
 
 

@@ -175,12 +175,13 @@ And in Streamlit, our frontend is split into three parts: Col1, Col2A, Col2B
 - someway to give cache more than one document 
 - Remove the cache implementation where we're calling gpt from there 
 - If cache partial hit, need option to ONLY query LLM w/ non-cache hit (some way to specify for each)
+- If cache hit, but still LLM, and LLM score better, replace cache entry w/ better result or append
 
 **Exfiltration****
   - Remove squad documents, point to docs in ./docs
   - Figure out what's wrong w/ Data Exfiltration leak detection 
   - Need to do the verification check in reverse! (so once LLM, before showing results, run LLM check)
-
+  - Need to not only add file names, but also big ideas (ex. "Financial Information About Cisco") 
 
 **Verification** 
 - Update so slider in doc id actually matters

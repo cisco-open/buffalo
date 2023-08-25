@@ -178,6 +178,7 @@ def create_app(server_state):
         return {'response': "Successfully added to cache."}, 200
    
     
+    
     """ 02) Output Layer Methods """
 
     # /exfiltrator/post --> receives output, returns leaks, if any
@@ -191,6 +192,7 @@ def create_app(server_state):
         exfiltrated = [] 
 
         for text in data['text_list']: 
+            print(f"(app) /exfiltrator/post Detecting leaks for: {text}")
             leak = exfiltrator.detect_leak(text)
             any_leak = leak or any_leak
             leaks.append(leak) 
@@ -201,7 +203,6 @@ def create_app(server_state):
                 exfiltrated.append(text)
 
         return json.dumps({'output_list_exfiltrated' : exfiltrated, 'leak_list' : leaks, 'any_leak' : any_leak})
-
 
 
     # /exfiltrator/post --> receives output, returns leaks, if any

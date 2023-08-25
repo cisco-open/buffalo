@@ -27,7 +27,11 @@ class ExfiltrationModel():
         if not file_list: 
             self.filter_list = ['Dutch_Republic', 'Symbiosis', 'Heresy', 'Hunter-gatherer', 'Pub']
         else:
-            self.filter_list = file_list 
+            file_list_without_exts = [] 
+            for filename in file_list: 
+                if filename.endswith(".txt"): 
+                    file_list_without_exts.append((filename.split(".")[0]))
+            self.filter_list = file_list_without_exts  
         
         print(f"(leaks) Initialized exfiltration against: {self.filter_list}")
 
@@ -103,7 +107,6 @@ class ExfiltrationModel():
         vec = self.rannet_model.predict(np.array([tok.ids]))
         faiss.normalize_L2(vec)
         k = 50
-        print ("here",k)
         distances, ann = index.search(vec, k=k)
         
         results = pd.DataFrame({'distances': distances[0], 'ann': ann[0]})
@@ -130,8 +133,11 @@ class ExfiltrationModel():
 
             distance = list(response['distances'])[:self.top_k]
             category = list(response['category'])[:self.top_k]
+            print("DIST", distance)
+            print("CAT", category)
 
             if list(set(self.filter_list) & set(category)): 
+                print("ENTERED SECOND IF")
                 for i,j in zip(distance, category):
                     if j in self.filter_list:
                         matched_docs.append(j)
@@ -146,11 +152,8 @@ class ExfiltrationModel():
 
         matched_docs = [] 
         print(f"(leaks) Entered detect_docs function w/ {txt}")
-        print(f"(leaks) Got result: {result}")
         if len(result): 
             response = result[0]
-            print("ENTERED FIRST IF")
-            print(response)
             distance = list(response['distances'])[:self.top_k]
             category = list(response['category'])[:self.top_k]
             print("DIST", distance)
