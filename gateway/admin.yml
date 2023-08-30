@@ -8,7 +8,7 @@ supported_models:
 - "gpt-3.5"
 - "dolly-3b"
 api_keys: 
-  "gpt-3.5": "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"
+  "gpt-3.5": "ADD_YOUR_OPENAI_API_KEY_HERE"
 
 path_to_doc: "docs/"
 show_docs: True 
