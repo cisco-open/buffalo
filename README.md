@@ -25,7 +25,9 @@ The zip folder can be downloaded from [Stanford OpenIE Repo](https://stanfordnlp
 
 ### Installing Python Packages 
 
-Need to pip install the following (and more): 
+> Will have a conda env/requirements.txt coming soon! 
+
+Need to pip install the following: 
 
 - streamlit 
 - annotated_text
@@ -40,9 +42,11 @@ Need to pip install the following (and more):
 There will be a few models downloaded as well, including: 
 - lighteternal/fact-or-opinion-xmlr-el 
 
-Raunak's RANNET has already been included in the folder, and should be ready to go. It's the reason why this repo is 600 MB+ lol 
+### Installing RANNET 
 
-> JUST KIDDING, THE ABOVE STATEMENT IS ONLY TRUE FOR THE .ZIP FILE VERSION, NOT FOR THE GITHUB VERSION. FOR THE GITHUB VERSION, BOTH OF THOSE NEED TO BE INSTALLED. BOTH OF THOSE FOLDERS (there are two RANNET folders) have been ZIPPED AND SENT IN THE WEBEX CHAT. UNZIP IT INTO THE MODELS FOLDER, AND YOU SHOULD BE GOOD TO GO!!
+> TODO: Docker image will take care of this -- coming soon! 
+
+Both RANNET base english model and model-store need to be downloaded. These can be found on the RANNET GitHub page. 
 
 &nbsp; &nbsp;
 
@@ -59,7 +63,6 @@ Ensure that security settings are disabled by going to `Elasticsearch.yml` in th
 
 xpack.security.enabled: false
 xpack.security.enrollment.enabled: false
-
 ```
 
 [More Info - Disabling Elasticsearch Security](https://discuss.elastic.co/t/disable-authentification-for-elasticsearch/304862/3)
@@ -84,7 +87,6 @@ Next, navigate to the gateway folder and start the backend
 ```
 cd gateway
 python app.py 
-
 ```
 
 &nbsp; &nbsp;
@@ -98,7 +100,7 @@ Next, launch streamlit by going back to the top-level directory:
 
 ```
 cd ..
-streamlit main.py
+streamlit run main.py
 ```
 
 &nbsp; &nbsp;
@@ -117,17 +119,19 @@ All REST API endpoints can be seen in app.py, and they are summarized here:
 - (GET) / = default, ensures server is up 
 - (GET) /reset = resets server state 
 - (GET) /docs = gets all documents and file sizes in Enterprise Knowledge Base (set to the .\gateway\docs folder)
+- (GET) /model_list = gets list of all models as specified in admin.yml
+- (POST) /model = receives query, returns answer given specific LLM 
 
 **Input Layer Methods**
 - (POST) /prompt/post = recieves input prompt and selected models, returns cost options 
-- (POST) /cache/post = receives prompt, returns cache results (***THIS IS ALSO USED FOR LLM QUERYING ATM***)
-
-> Essentially, when cache threshold is set to a really high value, it queries the LLM --> so we're using the above endpoint for 2 different things 
-> This needs to be changed to allow for models beyond GPT3.5, which will be done soon 
+- (POST) /cache/search/post = receives prompt, returns cache results 
+- (POST) /cache/model/post = receives query, returns document-specific LLM response (if applicable) 
+  (POST) /cache/add/post = receives prompt/query, adds to cache 
 
 **Output Layer Methods** 
-- (POST) /exfiltrator/post = receives output of llm, returns leaks, if any 
-- (POST) /verify/facts/post = receives LLM output, returns facts, if any
+- (POST) /exfiltrator/post = receives output of llm, returns leaks, if any
+- (POST) /exfiltrator/topic/post = receives output of llm, returns list of relevant topics/facts
+- (POST) /verify/facts/post = receives LLM output, returns list of facts
 - (POST) /verify/ie/post = receives list of facts, retruns relation triplets for each, if any 
 - (POST) /verify/triplet/post = receives list of triplets, returns matches/info if found 
 
@@ -151,8 +155,6 @@ And in Streamlit, our frontend is split into three parts: Col1, Col2A, Col2B
 ## Works-In-Progress: 
 
 **Overall**
-- NEED TO ENSURE THAT YML FILE GOES TO ALL MODULES 
-- MAKE IT CONFIGURABLE USING YML FILE 
 - Some way to store session state so can have chat history 
 - Json dictionary from end-to-end (need to discuss some new ideas)
 - Model Comparison (benchmark of prompts to multiple models, give truthfulness score)
@@ -162,34 +164,25 @@ And in Streamlit, our frontend is split into three parts: Col1, Col2A, Col2B
 
 **Model-Separation**
 - Change model so we're loading from huggingface + have a dedicated class
-  - It's calculation specific too atm! 
-- issue w/ cache gpt usage is that cant actually be an LLM
-
 
 **Prompt-Layer**
-- Update prompt layer so it works w/ any len of decomposed queries 
-- Make it scalable via for loop instead of if statements
-- Say cost options can be configured by admin 
+- Say cost options can be configured by admin (verbosity)
 
 **Cache-Layer**
 - someway to give cache more than one document 
-- Remove the cache implementation where we're calling gpt from there 
 - If cache partial hit, need option to ONLY query LLM w/ non-cache hit (some way to specify for each)
 - If cache hit, but still LLM, and LLM score better, replace cache entry w/ better result or append
 
 **Exfiltration****
-  - Remove squad documents, point to docs in ./docs
-  - Figure out what's wrong w/ Data Exfiltration leak detection 
-  - Need to do the verification check in reverse! (so once LLM, before showing results, run LLM check)
+  - Remove squad documents (or be able to toggle off)
   - Need to not only add file names, but also big ideas (ex. "Financial Information About Cisco") 
 
 **Verification** 
-- Update so slider in doc id actually matters
-- Update so prompt/response topics are correct  
 - Need to separate between retrieval augmented correction/generation
   - Will NOT send docs to LLM until we explicitly ask it to
 
 
 **Miscellaneous**
 - Need to create readme
-  - Create conda env yml for easy installation 
+  - Create conda env yml for easy installation
+  - Finish docker image 
