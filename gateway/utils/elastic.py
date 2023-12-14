@@ -1,3 +1,20 @@
+
+# Copyright 2022 Cisco Systems, Inc. and its affiliates
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
 from elasticsearch import Elasticsearch
 import spacy
 import os 
@@ -6,7 +23,7 @@ import os
 nlp = spacy.load("en_core_web_sm")
 
 # Initialize Elasticsearch
-es = Elasticsearch()
+es = Elasticsearch("http://elasticsearch:9200")
 
 
 class ElasticVerification(): 
@@ -16,7 +33,7 @@ class ElasticVerification():
         self.es_index = "text_index"
 
         # Delete the index
-        if es.indices.exists(self.es_index):
+        if es.indices.exists(index=self.es_index):
             es.indices.delete(index=self.es_index)
             print(f"(elastic) Index '{self.es_index}' deleted.")
         else:

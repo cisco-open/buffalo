@@ -1,0 +1,14 @@
+FROM python:3.10.13-bullseye
+WORKDIR /EnterpriseLLM
+RUN apt-get update && apt-get -y upgrade 
+RUN apt-get install -y python3-dev build-essential
+RUN apt-get install -y sqlite3 libsqlite3-dev
+RUN apt-get update 
+RUN apt-get install -y openjdk-11-jre
+COPY . .
+RUN pip install -r requirements.txt
+EXPOSE 3000
+RUN python -m spacy download en_core_web_sm
+WORKDIR /EnterpriseLLM/gateway
+CMD ["python", "app.py"] 
+

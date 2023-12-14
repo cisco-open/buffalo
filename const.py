@@ -61,7 +61,7 @@ RADIO_ITEMS = "The default option has been preselected. Combinations and options
 
 INPUT_SUCCESS = "Results of Prompt and Cache Layer are discussed to the right!"
 
-SERVER = "http://localhost:3000"
+SERVER = "http://enterprisellmbackend:3000"
 
 SENSITIVITY_SLIDER_TEXT = "Sensitivity of Document Embeddings (top-k, 1 = strict, 4 = flexible). Default selection is 2, meaning top-2 documents are chosen for both prompt and response 🔎."
 

@@ -1,3 +1,20 @@
+
+# Copyright 2022 Cisco Systems, Inc. and its affiliates
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+
 from flask import Flask, request
 import json
 import os
@@ -27,8 +44,9 @@ def create_server_state():
 def create_app(server_state):
 
     """ Reading YAML """
-    with open('admin.yml', 'r') as file:
+    with open('./yaml/admin.yml', 'r') as file:
         config_setup = yaml.safe_load(file)
+        config_setup['api_keys']["gpt-3.5"] = os.environ.get('OPEN_AI_KEY', config_setup['api_keys']["gpt-3.5"])
     
     
     app = Flask(__name__)
@@ -261,7 +279,7 @@ def create_app(server_state):
     return app
 
 
-def run_app_server(app, port=3000, ip='localhost'):
+def run_app_server(app, port=3000, ip='0.0.0.0'):
 
     print("PID:", os.getpid())
     print("Werkzeug subprocess:", os.environ.get("WERKZEUG_RUN_MAIN"))
