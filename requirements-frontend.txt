@@ -1,0 +1,5 @@
+streamlit==1.26.0
+extra-streamlit-components==0.1.60
+st-annotated-text==4.0.1
+annotated-types==0.5.0
+requests

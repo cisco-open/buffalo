@@ -1,0 +1,11 @@
+FROM python:3.10.13-bullseye
+WORKDIR /EnterpriseLLM
+RUN apt-get update && apt-get -y upgrade 
+RUN apt-get install -y python3-dev build-essential
+RUN apt-get update 
+RUN apt-get install -y openjdk-11-jre
+COPY . .
+RUN pip install -r requirements-frontend.txt
+EXPOSE 8501
+CMD ["streamlit", "run", "main.py"] 
+

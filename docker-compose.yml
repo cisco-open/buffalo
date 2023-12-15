@@ -1,0 +1,30 @@
+version: "3"
+services:
+  enterprisellm:
+    container_name: "enterprisellmbackend"
+    image: blazenlp/enterprisellm_backend:latest 
+    environment:
+      - OPEN_AI_KEY=ENTER_YOUR_OPENAI_KEY_HERE
+    ports:
+      - 3000:3000
+    depends_on:
+      - elastic-search
+  enterprisellm-frontend:
+    image: blazenlp/enterprisellm_frontend:latest  
+    ports:
+      - "8501:8501"
+    depends_on:
+      - enterprisellm
+  elastic-search:
+    container_name: "elasticsearch"
+    image: elasticsearch:8.9.1
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
+    ports:
+      - 9200:9200
+    volumes:
+      - elastic-db:/usr/share/elasticsearch/data
+volumes:
+  elastic-db: 
