@@ -1,4 +1,4 @@
-# Contributing to Blaze
+# Contributing to J-WB
 Thank you for taking time to start contributing! We want to make contributing to this project as easy and transparent as possible, whether it's:
 
 - Reporting a bug
@@ -23,8 +23,8 @@ Pull requests are the best way to propose changes to the codebase. We actively w
 In short, when you submit code changes, your submissions are understood to be under the same [Apache License](LICENSE) that covers the project.
 Feel free to contact the maintainers if that's a concern.
 
-## Report bugs using Github's [issues](https://github.com/cisco-open/blaze/issues)
-We use GitHub issues to track public bugs. Report a bug by [opening a new issue](https://github.com/cisco-open/blaze/issues).
+## Report bugs using Github's [issues](https://github.com/cisco-open/J-WB/issues)
+We use GitHub issues to track public bugs. Report a bug by [opening a new issue](https://github.com/cisco-open/J-WB/issues).
 
 ## Write bug reports with detail, background, and sample code
 
