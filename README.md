@@ -25,38 +25,6 @@ Our team identified several limitations of the LLM landscape which prevent Enter
 
 &nbsp; &nbsp;
 
-## Current Features
-
-&nbsp; &nbsp;
-
-### Prompt Layer
-
-&nbsp; &nbsp;
-
-### LLM Cache 
-
-&nbsp; &nbsp;
-
-### Data Exfiltration
-
-&nbsp; &nbsp;
-
-### Output Verification 
-
-&nbsp; &nbsp;
-
-## Installation 
-
-&nbsp; &nbsp;
-
-### Installing via Docker
-
-&nbsp; &nbsp;
-
-### Installating Manually 
-
-&nbsp; &nbsp;
-
 #### Installing Python Packages 
 
 To start, we can clone this repository using: 
