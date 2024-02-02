@@ -84,11 +84,7 @@ Both RANNET base english model and model-store need to be downloaded. These can 
 
 Having completed installation, launching BUFFALO is as easy as 1, 2, 3. 
 
-> TODO: need to add in their API key (but in which step?) 
-
 #### Step 1) Launching Elasticsearch 
-
-> TODO: ideally should have elasticsearch launch when starting the REST API server w/ subprocess call 
 
 You can launch Elasticsearch by navigating to the downloaded, unzipped directory, and using the corresponding command.
 
@@ -137,8 +133,6 @@ This server contains ALL the actual gateway components/computations, allowing th
 All streamlit does is call the REST API server w/ corresponding GET/POST request, and displays the output. 
 
 All REST API endpoints can be seen in `app.py`, and they are summarized here: 
-
-> TODO: confirm whether we added any more/if this is an exhaustive list 
 
 |                  |                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 |:----------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
