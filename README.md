@@ -5,7 +5,7 @@
 
 > **tl;dr** - Cisco Research proudly presents BUFFALO, a **flexible**, **open-source** enterprise **gateway** for _LLMs_.
 > 
-> Check out our [TechBlog](https://techblog.cisco.com/), [Slide Deck](/Buffalo_Slides.pdf), and [Demo Videos]() for more information and exciting applications!
+> Check out our [TechBlog](https://techblog.cisco.com/), [Slide Deck](/Buffalo_Slides.pdf), [Demo Input](/BUFFALO_2min_InputLayer.mp4), and [Demo Output](/BUFFALO_2min_OutputLayer.mp4) for more information and exciting applications!
 > 
 > Make sure to use the **Table of Contents** (the three horizontal lines next to `README.md`) for easier viewing!
 
@@ -153,6 +153,8 @@ And in Streamlit, our frontend is split into three parts: Col1, Col2A, Col2B
 &nbsp; &nbsp;
 
 ## Future Directions
+
+> We have several TODO's spread out throughout our files! We will continue working in these directions to improve BUFFALO, adjusting as needed based on our user's feedback
 
 Currently, we are working on implementing the following features, split by component-of-focus: 
 
