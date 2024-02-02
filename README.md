@@ -5,7 +5,7 @@
 
 > **tl;dr** - Cisco Research proudly presents BUFFALO, a **flexible**, **open-source** enterprise **gateway** for _LLMs_.
 > 
-> Check out our [TechBlog](https://techblog.cisco.com/), [Slide Deck](), and [Demo Videos]() for more information and exciting applications!
+> Check out our [TechBlog](https://techblog.cisco.com/), [Slide Deck](/Buffalo_Slides.pdf), and [Demo Videos]() for more information and exciting applications!
 > 
 > Make sure to use the **Table of Contents** (the three horizontal lines next to `README.md`) for easier viewing!
 
