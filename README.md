@@ -152,7 +152,7 @@ And in Streamlit, our frontend is split into three parts: Col1, Col2A, Col2B
 
 &nbsp; &nbsp;
 
-## Future Directions
+## Contributing & Future Directions
 
 > We have several TODO's spread out throughout our files! We will continue working in these directions to improve BUFFALO, adjusting as needed based on our user's feedback
 
@@ -168,7 +168,7 @@ Currently, we are working on implementing the following features, split by compo
 |  **Verification**  | <ul><li>Need to separate between retrieval augmented correction/generation</li><li>Will NOT send docs to LLM until we explicitly ask it to</li></ul>                                                                                                                                                                                                                                                                                   |
 |  **Miscellaneous** | <ul><li>Create + Test Conda Env</li><li>Merge Elasticsearch launch into backend start</li></ul>                                                                                                                                                                                                                                                                                                                                           |
 
-If you wish to contribute or suggest any additional funtionalities, please feel free to fork this repo or reach out to us! 
+If you wish to contribute or suggest any additional funtionalities, please check out [Contributing Guidelines](/CONTRIBUTING.md)
 
 ## Acknowledgements  
 
