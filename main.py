@@ -26,7 +26,7 @@ from frontend.col2B import col2B
 from const import INITIAL_STATE 
  
 
-st.set_page_config(page_title='J-WATR-BUFFALO', layout="wide")
+st.set_page_config(page_title='BUFFALO', layout="wide")
 
 if 'demo_state' not in st.session_state: 
     st.session_state.demo_state = INITIAL_STATE 
