@@ -1,4 +1,4 @@
-# J-WATR BUFFALO - An Enterprise LLM Gateway 🐃
+# BUFFALO - An Enterprise LLM Gateway 🐃
 ***Boundless User-Focused Framework for Advanced LLM Optimzation*** 
 
 &nbsp; &nbsp;
