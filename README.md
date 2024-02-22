@@ -174,7 +174,7 @@ If you wish to contribute or suggest any additional funtionalities, please check
 
 BUFFALO would not have been possible without the contributions of the following individuals, to whom we express our gratitude: 
 
-- **Jayanth Srinivasa**, **Advit Deepak**, **Will Healy**, **Raunak Sinha**, **Tarun Raheja**, Goli Vamsi Krishna Mohan, Ramana Kompella, Vijoy Pandey
+- **Advit Deepak**, **Will Healy**, **Raunak Sinha**, **Tarun Raheja**, **Jayanth Srinivasa**, **Charles Fleming**, **Goli Vamsi Krishna Mohan**, Ramana Kompella, Vijoy Pandey
 - The entirety of the Cisco Research team for their feedback, ideas, and support 🥳
 
 Thank you so much for checking us out! 🐃
