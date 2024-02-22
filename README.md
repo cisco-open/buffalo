@@ -29,7 +29,7 @@ Our team identified several limitations of the LLM landscape which prevent Enter
 
 To start, we can clone this repository using: 
 ```
-git clone https://github.com/cisco-open/Buffalo.git
+git clone https://github.com/cisco-open/BUFFALO.git
 ```
 
 Next, we must install the necessary packages for BUFFALO. For this, we have two options:
