@@ -24,7 +24,7 @@ jobs:
         uses: actions/upload-pages-artifact@v2
         with:
           # 👇 Specify build output path
-          path: docs/build
+          path: docs
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
