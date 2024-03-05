@@ -1,0 +1,22 @@
+---
+sidebar_position: 5
+---
+
+# Contributing & Future Directions
+
+
+> We have several TODO's spread out throughout our files! We will continue working in these directions to improve BUFFALO, adjusting as needed based on our user's feedback
+
+Currently, we are working on implementing the following features, split by component-of-focus: 
+
+|                    |                                                                                                                                                                                                                                                                                                                                                                                                                    |
+|:------------------:|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|     **Overall**    | <ul><li>Some way to store session state so can have chat history</li><li>Json dictionary from end-to-end (need to discuss some new ideas)</li><li>Model Comparison (benchmark of prompts to multiple models, give truthfulness score)</li><li>Can sample a few datapoints to run check against (show comparison on how they work)</li><li>Running multiple models (can ask Vamsi)</li><li>Using GPT4 to tag (connecting prompt and verification)</li></ul>  |
+| **Model-Specific** | <ul><li>Change model so we're loading from huggingface + have a dedicated class</li></ul>                                                                                                                                                                                                                                                                                                                                          |
+|  **Prompt Layer**  | <ul><li>Say cost options can be configured by admin (verbosity), add to admin.yml</li></ul>                                                                                                                                                                                                                                                                                                                                        |
+|    **LLM Cache**   | <ul><li>Someway to give cache more than one document</li><li>If cache partial hit, need option to ONLY query LLM w/ non-cache hit (some way to specify for each)</li><li>If cache hit, but still LLM, and LLM score better, replace cache entry w/ better result or append</li></ul>                                                                                                                                                          |
+|  **Exfiltration**  | <ul><li>Remove squad documents (or be able to toggle off)</li><li>Need to not only add file names, but also big ideas (ex. "Financial Information About Cisco")</li><li>Solidify Idea Embeddings research ^^</li></ul>                                                                                                                                                                                                                       |
+|  **Verification**  | <ul><li>Need to separate between retrieval augmented correction/generation</li><li>Will NOT send docs to LLM until we explicitly ask it to</li></ul>                                                                                                                                                                                                                                                                                   |
+|  **Miscellaneous** | <ul><li>Create + Test Conda Env</li><li>Merge Elasticsearch launch into backend start</li></ul>                                                                                                                                                                                                                                                                                                                                           |
+
+If you wish to contribute or suggest any additional funtionalities, please check out [Contributing Guidelines](/CONTRIBUTING.md)

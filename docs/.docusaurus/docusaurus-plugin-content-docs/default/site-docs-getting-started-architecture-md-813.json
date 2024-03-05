@@ -1,0 +1,27 @@
+{
+  "id": "Getting-started/Architecture",
+  "title": "Architecture",
+  "description": "Let's take a quick look at how our BUFFALO gateway works under the hood.",
+  "source": "@site/docs/Getting-started/Architecture.md",
+  "sourceDirName": "Getting-started",
+  "slug": "/Getting-started/Architecture",
+  "permalink": "/docs/Getting-started/Architecture",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/Getting-started/Architecture.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "sidebar_position": 4
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Usage (Demos)",
+    "permalink": "/docs/Getting-started/Usage"
+  },
+  "next": {
+    "title": "Contributing & Future Directions",
+    "permalink": "/docs/Getting-started/Contributing"
+  }
+}

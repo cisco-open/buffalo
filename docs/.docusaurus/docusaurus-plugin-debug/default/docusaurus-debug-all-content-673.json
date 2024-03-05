@@ -1,0 +1,258 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "loadedVersions": [
+        {
+          "versionName": "current",
+          "label": "Next",
+          "banner": null,
+          "badge": false,
+          "noIndex": false,
+          "className": "docs-version-current",
+          "path": "/docs",
+          "tagsPath": "/docs/tags",
+          "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs",
+          "editUrlLocalized": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/i18n/en/docusaurus-plugin-content-docs/current",
+          "isLast": true,
+          "routePriority": -1,
+          "sidebarFilePath": "/home/vamsi/projects/buffalo/docs/sidebars.js",
+          "contentPath": "/home/vamsi/projects/buffalo/docs/docs",
+          "contentPathLocalized": "/home/vamsi/projects/buffalo/docs/i18n/en/docusaurus-plugin-content-docs/current",
+          "docs": [
+            {
+              "id": "Getting-started/Architecture",
+              "title": "Architecture",
+              "description": "Let's take a quick look at how our BUFFALO gateway works under the hood.",
+              "source": "@site/docs/Getting-started/Architecture.md",
+              "sourceDirName": "Getting-started",
+              "slug": "/Getting-started/Architecture",
+              "permalink": "/docs/Getting-started/Architecture",
+              "draft": false,
+              "unlisted": false,
+              "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/Getting-started/Architecture.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 4,
+              "frontMatter": {
+                "sidebar_position": 4
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Usage (Demos)",
+                "permalink": "/docs/Getting-started/Usage"
+              },
+              "next": {
+                "title": "Contributing & Future Directions",
+                "permalink": "/docs/Getting-started/Contributing"
+              }
+            },
+            {
+              "id": "Getting-started/Contributing",
+              "title": "Contributing & Future Directions",
+              "description": "We have several TODO's spread out throughout our files! We will continue working in these directions to improve BUFFALO, adjusting as needed based on our user's feedback",
+              "source": "@site/docs/Getting-started/Contributing.md",
+              "sourceDirName": "Getting-started",
+              "slug": "/Getting-started/Contributing",
+              "permalink": "/docs/Getting-started/Contributing",
+              "draft": false,
+              "unlisted": false,
+              "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/Getting-started/Contributing.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 5,
+              "frontMatter": {
+                "sidebar_position": 5
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Architecture",
+                "permalink": "/docs/Getting-started/Architecture"
+              }
+            },
+            {
+              "id": "Getting-started/Installation",
+              "title": "Installation",
+              "description": "Installing Python Packages",
+              "source": "@site/docs/Getting-started/Installation.md",
+              "sourceDirName": "Getting-started",
+              "slug": "/Getting-started/Installation",
+              "permalink": "/docs/Getting-started/Installation",
+              "draft": false,
+              "unlisted": false,
+              "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/Getting-started/Installation.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 2,
+              "frontMatter": {
+                "sidebar_position": 2
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Why Buffalo?",
+                "permalink": "/docs/Getting-started/why-buffalo"
+              },
+              "next": {
+                "title": "Usage (Demos)",
+                "permalink": "/docs/Getting-started/Usage"
+              }
+            },
+            {
+              "id": "Getting-started/Usage",
+              "title": "Usage (Demos)",
+              "description": "Having completed installation, launching BUFFALO is as easy as 1, 2, 3.",
+              "source": "@site/docs/Getting-started/Usage.md",
+              "sourceDirName": "Getting-started",
+              "slug": "/Getting-started/Usage",
+              "permalink": "/docs/Getting-started/Usage",
+              "draft": false,
+              "unlisted": false,
+              "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/Getting-started/Usage.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 3,
+              "frontMatter": {
+                "sidebar_position": 3
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Installation",
+                "permalink": "/docs/Getting-started/Installation"
+              },
+              "next": {
+                "title": "Architecture",
+                "permalink": "/docs/Getting-started/Architecture"
+              }
+            },
+            {
+              "id": "Getting-started/why-buffalo",
+              "title": "Why Buffalo?",
+              "description": "The guiding question in our creation of BUFFALO was simple:",
+              "source": "@site/docs/Getting-started/why-buffalo.md",
+              "sourceDirName": "Getting-started",
+              "slug": "/Getting-started/why-buffalo",
+              "permalink": "/docs/Getting-started/why-buffalo",
+              "draft": false,
+              "unlisted": false,
+              "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/Getting-started/why-buffalo.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 1,
+              "frontMatter": {
+                "sidebar_position": 1
+              },
+              "sidebar": "tutorialSidebar",
+              "previous": {
+                "title": "Getting Started",
+                "permalink": "/docs/category/getting-started"
+              },
+              "next": {
+                "title": "Installation",
+                "permalink": "/docs/Getting-started/Installation"
+              }
+            },
+            {
+              "id": "intro",
+              "title": "Introduction",
+              "description": "Let's discover BUFFALO - An Enterprise LLM Gateway 🐃.",
+              "source": "@site/docs/intro.md",
+              "sourceDirName": ".",
+              "slug": "/intro",
+              "permalink": "/docs/intro",
+              "draft": false,
+              "unlisted": false,
+              "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/intro.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 1,
+              "frontMatter": {
+                "sidebar_position": 1
+              },
+              "sidebar": "tutorialSidebar",
+              "next": {
+                "title": "Getting Started",
+                "permalink": "/docs/category/getting-started"
+              }
+            }
+          ],
+          "drafts": [],
+          "sidebars": {
+            "tutorialSidebar": [
+              {
+                "type": "doc",
+                "id": "intro"
+              },
+              {
+                "type": "category",
+                "label": "Getting Started",
+                "collapsible": true,
+                "collapsed": true,
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "Getting-started/why-buffalo"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "Getting-started/Installation"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "Getting-started/Usage"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "Getting-started/Architecture"
+                  },
+                  {
+                    "type": "doc",
+                    "id": "Getting-started/Contributing"
+                  }
+                ],
+                "link": {
+                  "type": "generated-index",
+                  "description": "5 minutes to learn the most important Docusaurus concepts.",
+                  "slug": "/category/getting-started",
+                  "permalink": "/docs/category/getting-started"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "docusaurus-plugin-content-blog": {
+    "default": {
+      "blogSidebarTitle": "Recent posts",
+      "blogPosts": [],
+      "blogListPaginated": [],
+      "blogTags": {},
+      "blogTagsListPath": "/blog/tags",
+      "blogTagsPaginated": []
+    }
+  },
+  "docusaurus-plugin-content-pages": {
+    "default": [
+      {
+        "type": "jsx",
+        "permalink": "/",
+        "source": "@site/src/pages/index.js"
+      },
+      {
+        "type": "mdx",
+        "permalink": "/markdown-page",
+        "source": "@site/src/pages/markdown-page.md",
+        "title": "Markdown page example",
+        "description": "You don't need React to write simple standalone pages.",
+        "frontMatter": {
+          "title": "Markdown page example"
+        },
+        "unlisted": false
+      }
+    ]
+  },
+  "docusaurus-plugin-debug": {},
+  "docusaurus-theme-classic": {},
+  "docusaurus-bootstrap-plugin": {},
+  "docusaurus-mdx-fallback-plugin": {}
+}

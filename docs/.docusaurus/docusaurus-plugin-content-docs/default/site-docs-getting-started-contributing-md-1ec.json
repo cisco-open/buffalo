@@ -1,0 +1,23 @@
+{
+  "id": "Getting-started/Contributing",
+  "title": "Contributing & Future Directions",
+  "description": "We have several TODO's spread out throughout our files! We will continue working in these directions to improve BUFFALO, adjusting as needed based on our user's feedback",
+  "source": "@site/docs/Getting-started/Contributing.md",
+  "sourceDirName": "Getting-started",
+  "slug": "/Getting-started/Contributing",
+  "permalink": "/docs/Getting-started/Contributing",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/Getting-started/Contributing.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 5,
+  "frontMatter": {
+    "sidebar_position": 5
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Architecture",
+    "permalink": "/docs/Getting-started/Architecture"
+  }
+}

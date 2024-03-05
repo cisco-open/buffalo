@@ -1,0 +1,27 @@
+{
+  "id": "Getting-started/Usage",
+  "title": "Usage (Demos)",
+  "description": "Having completed installation, launching BUFFALO is as easy as 1, 2, 3.",
+  "source": "@site/docs/Getting-started/Usage.md",
+  "sourceDirName": "Getting-started",
+  "slug": "/Getting-started/Usage",
+  "permalink": "/docs/Getting-started/Usage",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/Getting-started/Usage.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Installation",
+    "permalink": "/docs/Getting-started/Installation"
+  },
+  "next": {
+    "title": "Architecture",
+    "permalink": "/docs/Getting-started/Architecture"
+  }
+}

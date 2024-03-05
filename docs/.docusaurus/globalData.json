@@ -1,0 +1,63 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "path": "/docs",
+      "versions": [
+        {
+          "name": "current",
+          "label": "Next",
+          "isLast": true,
+          "path": "/docs",
+          "mainDocId": "intro",
+          "docs": [
+            {
+              "id": "Getting-started/Architecture",
+              "path": "/docs/Getting-started/Architecture",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "Getting-started/Contributing",
+              "path": "/docs/Getting-started/Contributing",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "Getting-started/Installation",
+              "path": "/docs/Getting-started/Installation",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "Getting-started/Usage",
+              "path": "/docs/Getting-started/Usage",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "Getting-started/why-buffalo",
+              "path": "/docs/Getting-started/why-buffalo",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "intro",
+              "path": "/docs/intro",
+              "sidebar": "tutorialSidebar"
+            },
+            {
+              "id": "/category/getting-started",
+              "path": "/docs/category/getting-started",
+              "sidebar": "tutorialSidebar"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "tutorialSidebar": {
+              "link": {
+                "path": "/docs/intro",
+                "label": "intro"
+              }
+            }
+          }
+        }
+      ],
+      "breadcrumbs": true
+    }
+  }
+}
